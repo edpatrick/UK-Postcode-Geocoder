@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<?!= include('stylesheet'); ?>
+<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+
+<div>
+<p>This application allows you to convert UK postcodes into their relevant latitude and longitude coordinates.</p>
+<br />
+<strong>How do I use it?</strong>
+<p>Select cells containing postcode data and click “Add-ons > UK Postcode Geocoder > Geocode selection” to convert the data into latitude/longitude.</p>
+<br />
+<strong>What do you mean by 'UK postcodes'?</strong>
+<p>The application currently will only provide latitude and longitude coordinates for active (i.e. currently in use and no discontinued) UK postcodes according to the ONS' Postcode Directory for November 2014 via <a href="http://postcodes.io/about" target="_blank">postcodes.io</a>.</p>
+<p>Postcodes can be upper or lower case and contain no spaces or 1 space before the last 3 characters (see examples below). Other formatting is likely to return an error.
+<ul>
+<li>wc1e 6bt</li>
+<li>wc1e6bt</li>
+<li>SW4 0BY</li>
+<li>SW40BY</li>
+</ul>
+<p>Postcodes or zip codes from other countries will return a 'not a valid postcode' error.</p>
+<br />
+<strong>Where is your data from?</strong>
+<p>This application uses UK postcode data under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_blank">Open Government Licence</a> for public sector information.</p>
+<p>The data is pulled from the <a href="https://postcodes.io/" target="_blank">postcodes.io API</a>.</p>
+</div>
+<div class="button_bar">
+<input type="button" value="Close"
+  onclick="google.script.host.close()" />
+  </div>
