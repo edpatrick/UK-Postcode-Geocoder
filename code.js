@@ -110,8 +110,18 @@ function writeOutput() {
   
   //write output
   try {
+    //create timestamp
+    var d = new Date();
+    var day = d.getDate();
+    var month = d.getMonth();
+    var year = d.getFullYear();
+    var hour = d.getHours(); 
+    var min = d.getMinutes();
+    var sec = d.getSeconds();
+    var timestamp = day +":"+ month +":"+ year +" | "+ hour +":"+ min +":"+ sec;
+    //write to new sheet
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    ss.insertSheet();
+    ss.insertSheet("Postcode Geocodes: " + timestamp);
     var sheet = ss.getActiveSheet();
     
     var outputRange = sheet.getRange(1, 1, output.length, 3);
