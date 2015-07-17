@@ -107,23 +107,21 @@ function writeOutput() {
   /*add headers*/
   var headers = ['Postcodes', 'Latitude', 'Longitude'];
   output.unshift(headers);
- 
-  
   
   //write output
   try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    ss.insertSheet();
+    var sheet = ss.getActiveSheet();
     
-    var t = HtmlService.createTemplateFromFile('index');
-    t.data = output;
-    var html = t.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME)
-    .setTitle('Results');
-    SpreadsheetApp.getUi()
-    .showSidebar(html);
-        
+    var outputRange = sheet.getRange(1, 1, output.length, 3);
+    outputRange.setValues(output);
+    
   }
   catch(e) {
     printUserMessage("Error: could not print results. Please try again.");
-  }
+  }  
+  
 }
 
 /**
