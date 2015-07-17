@@ -36,7 +36,7 @@ function onOpen(e) {
 */
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename)
-       .getContent(); 
+  .getContent(); 
 }
 
 
@@ -71,20 +71,35 @@ function openAboutDialog() {
 * Gets user selected data from sheet and converts
 * to array to be sent to API
 *
-* @return (array) data
+* @return {array} data
 */
 function getUserInput() {
   var range = SpreadsheetApp.getActiveRange();
   var data = range.getValues();
-  
   /*create api array from input*/  
   var apiLimit = 100;
   
   data = convertTwoToOneDimArray(data);
-  
+  /*filter empty elements*/
+  data = data.filter(isNotEmpty);
   data = createAPIArray(data, apiLimit);
   
   return data;
+}
+
+/*
+* checks to see if parameter is an empty string
+*
+* @param {String} e
+*
+* @return {boolean}
+*/
+function isNotEmpty(e) {
+  if (e == '') {
+    return false;
+  } else {
+    return true; 
+  }
 }
 
 /**
@@ -100,38 +115,43 @@ function writeOutput() {
   catch(e) {
     printUserMessage("Error: could not get data from the sheet. Please try again.");
   }
-  /*get output */
-  
-  var output = getLatLng(input);
-  
-  /*add headers*/
-  var headers = ['Postcodes', 'Latitude', 'Longitude'];
-  output.unshift(headers);
-  
-  //write output
-  try {
-    //create timestamp
-    var d = new Date();
-    var day = d.getDate();
-    var month = d.getMonth();
-    var year = d.getFullYear();
-    var hour = d.getHours(); 
-    var min = d.getMinutes();
-    var sec = d.getSeconds();
-    var timestamp = day +":"+ month +":"+ year +" | "+ hour +":"+ min +":"+ sec;
-    //write to new sheet
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    ss.insertSheet("Postcode Geocodes: " + timestamp);
-    var sheet = ss.getActiveSheet();
+  /*if user input is empty*/
+  if (input.length < 1) {
+    printUserMessage("Error: please select at least one cell with data");
+  } else {
     
-    var outputRange = sheet.getRange(1, 1, output.length, 3);
-    outputRange.setValues(output);
+    /*get output */
     
+    var output = getLatLng(input);
+    
+    /*add headers*/
+    var headers = ['Postcodes', 'Latitude', 'Longitude'];
+    output.unshift(headers);
+    
+    //write output
+    try {
+      //create timestamp
+      var d = new Date();
+      var day = d.getDate();
+      var month = d.getMonth();
+      var year = d.getFullYear();
+      var hour = d.getHours(); 
+      var min = d.getMinutes();
+      var sec = d.getSeconds();
+      var timestamp = day +":"+ month +":"+ year +" | "+ hour +":"+ min +":"+ sec;
+      //write to new sheet
+      var ss = SpreadsheetApp.getActiveSpreadsheet();
+      ss.insertSheet("Postcode Geocodes: " + timestamp);
+      var sheet = ss.getActiveSheet();
+      
+      var outputRange = sheet.getRange(1, 1, output.length, 3);
+      outputRange.setValues(output);
+      
+    }
+    catch(e) {
+      printUserMessage("Error: could not print results. Please try again.");
+    }  
   }
-  catch(e) {
-    printUserMessage("Error: could not print results. Please try again.");
-  }  
-  
 }
 
 /**
@@ -199,8 +219,8 @@ function convertTwoToOneDimArray(twoDimArray) {
 /**
 * Gets latitude and longitude data
 *
-* @param {Array} data 
-* @return {Array} values
+* @param {Array} postcodes 
+* @return {Array} output
 */
 
 function getLatLng(postcodes) {
