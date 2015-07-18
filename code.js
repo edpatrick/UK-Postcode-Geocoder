@@ -1,9 +1,6 @@
 /**
-* Script converts postcode data from a single spreadsheet column
-* into latitude and longitude coordinates.
-* These are inserted into the first empty column of the same spreadsheet.
-* The user selects which column to convert via a prompt from
-* the Google Sheets add-on menu.
+* This application allows you to convert UK postcodes into their 
+* relevant latitude and longitude coordinates.
 */
 
 
